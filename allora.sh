@@ -1,18 +1,14 @@
 #!/bin/bash
 
-print_intro() {
-    read -p 'Will you Continue? (Y/N): ' answer
-    if [[ "$answer" != "Y" && "$answer" != "y" ]]; then
-        echo 'Aborting installation.'
-        exit 1
-    fi
-}
+# 检查是否以root用户运行脚本
+if [ "$(id -u)" != "0" ]; then
+    echo "此脚本需要以root用户权限运行。"
+    echo "请尝试使用 'sudo -i' 命令切换到root用户，然后再次运行此脚本。"
+    exit 1
+fi
 
-print_intro
-
-# Update and install required packages
-#sudo apt update && sudo apt upgrade -y
-#sudo apt install -y ca-certificates zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev curl git wget make jq build-essential pkg-config lsb-release libssl-dev libreadline-dev libffi-dev gcc screen unzip lz4
+# 脚本保存路径
+SCRIPT_PATH="$HOME/allora.sh"
 
 # Install Python
 if ! command -v python3 &> /dev/null
