@@ -19,11 +19,35 @@ execute_and_prompt() {
     echo -e "${GREEN}Done.${NC}"
 }
 
+echo -e "${YELLOW}Installing NVM and Node.js LTS...${NC}"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+sleep 2
+source ~/.bashrc
+nvm install --lts
+nvm use --lts
+echo -e "${GREEN}Node.js installed: $(node -v)${NC}"
+echo
+if [ -d "testnet-deposit" ]; then
+    execute_and_prompt "Removing existing testnet-deposit folder..." "rm -rf testnet-deposit"
+fi
+echo -e "${YELLOW}Cloning repository and installing npm dependencies...${NC}"
+echo
+git clone https://github.com/Eclipse-Laboratories-Inc/testnet-deposit
+cd testnet-deposit
+npm install
+echo
+
+echo -e "${YELLOW}Installing Solana CLI...${NC}"
+echo
+
 read -p "Enter your Solana address: " solana_address
 read -p "Enter your Ethereum Private Key: " ethereum_private_key
 read -p "Enter the number of times to repeat Transaction (4-5 tx Recommended): " repeat_count
 echo
-cd testnet-deposit
+
 for ((i=1; i<=repeat_count; i++)); do
     echo -e "${YELLOW}Running Bridge Script (Tx $i)...${NC}"
     echo
