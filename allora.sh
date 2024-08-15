@@ -75,6 +75,7 @@ fi
 cd $HOME
 git clone https://github.com/allora-network/basic-coin-prediction-node
 cd basic-coin-prediction-node
+git checkout snyk-fix-d2c590ad5890853800f22aa42bc250c5
 mkdir worker-data head-data
 sudo chmod -R 777 worker-data head-data
 
