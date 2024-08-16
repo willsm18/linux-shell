@@ -105,10 +105,9 @@ function install_storage_node() {
     # read -p "请输入设备 IP 地址（本地机器请输入127.0.0.1）: " public_address
     read -p "请输入使用的 JSON-RPC : " json_rpc
 	
-	# s|# network_enr_address = ""|network_enr_address = "'$public_address'"|
     sed -i '
-    s|# blockchain_rpc_endpoint = ".*"|blockchain_rpc_endpoint = "'$json_rpc'"|
-    s|# miner_key = ""|miner_key = "'$miner_key'"|
+    s|blockchain_rpc_endpoint = ".*"|blockchain_rpc_endpoint = "'$json_rpc'"|
+    s|miner_key = ""|miner_key = "'$miner_key'"|
     ' $HOME/0g-storage-node/run/config-testnet-turbo.toml
 
     # 启动
