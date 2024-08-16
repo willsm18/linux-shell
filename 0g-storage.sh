@@ -274,7 +274,7 @@ function main_menu() {
         clear
         echo "=======================存储节点功能================================"
         echo "1. 安装存储节点环境"
-		echo "2. 安装存储节点"
+	echo "2. 安装存储节点"
         echo "3. 查看存储节点日志"
         echo "4. 过滤错误日志"
         echo "5. 重启存储节点"
@@ -286,7 +286,7 @@ function main_menu() {
 
         case $OPTION in
         1) install_storage_node_env ;;
-		2) install_storage_node ;;
+	2) install_storage_node ;;
         3) check_storage_logs ;;
         4) check_storage_error;;
         5) restart_storage ;;
