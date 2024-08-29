@@ -107,7 +107,9 @@ function install_storage_node() {
 	
     sed -i '
     s|blockchain_rpc_endpoint = ".*"|blockchain_rpc_endpoint = "'$json_rpc'"|
+    s|# blockchain_rpc_endpoint = ".*"|blockchain_rpc_endpoint = "'$json_rpc'"|
     s|miner_key = ""|miner_key = "'$miner_key'"|
+    s|# miner_key = ""|miner_key = "'$miner_key'"|
     ' $HOME/0g-storage-node/run/config-testnet-turbo.toml
 
     # 启动
