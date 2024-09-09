@@ -95,11 +95,11 @@ function install_fractald_node() {
 	
 	sudo tar -zxvf fractald-0.2.1-x86_64-linux-gnu.tar.gz
 	
-	sudo cd fractald-0.2.1-x86_64-linux-gnu
+	cd fractald-0.2.1-x86_64-linux-gnu
 	
 	sudo mkdir data
 	
-	sudo cp ./bitcoin.conf ./data
+	cp ./bitcoin.conf ./data
 	
 	sudo tee /etc/systemd/system/fractald.service > /dev/null <<EOF
 	[Unit]
