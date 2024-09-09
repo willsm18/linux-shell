@@ -128,27 +128,29 @@ EOF
 
 # 主菜单
 function main_menu() {
-    clear
-    echo "安装基础组件，免费开源，请勿相信收费"
-    echo "================================================================"
-    echo "请选择要执行的操作:"
-    echo "1. 安装基础软件"
-	echo "2. 安装fractald节点"
-	echo "3. 查看fractald日志"
-	echo "4. 创建钱包"
-	echo "5. 创建钱包私钥"
-    read -p "请输入选项: " OPTION
-
-    case $OPTION in
-    1) install_basic_soft ;;
-	2) install_fractald_node ;;
-	3) view_fractald_log ;;
-	4) create_wallet ;;
-	5) view_wallet_pk ;;
-    *) echo "无效选项。" ;;
-    esac
-        echo "按任意键返回主菜单..."
-        read -n 1
+    while true; do
+	    clear
+	    echo "安装基础组件，免费开源，请勿相信收费"
+	    echo "================================================================"
+	    echo "请选择要执行的操作:"
+	    echo "1. 安装基础软件"
+		echo "2. 安装fractald节点"
+		echo "3. 查看fractald日志"
+		echo "4. 创建钱包"
+		echo "5. 创建钱包私钥"
+	    read -p "请输入选项: " OPTION
+	
+	    case $OPTION in
+	    1) install_basic_soft ;;
+		2) install_fractald_node ;;
+		3) view_fractald_log ;;
+		4) create_wallet ;;
+		5) view_wallet_pk ;;
+	    *) echo "无效选项。" ;;
+	    esac
+	        echo "按任意键返回主菜单..."
+	        read -n 1
+	 done
 }
 
 # 显示主菜单
