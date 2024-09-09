@@ -84,7 +84,7 @@ function create_wallet() {
 function view_wallet_pk() {
 	cd /root/fractald-0.2.1-x86_64-linux-gnu/bin
 	sudo ./bitcoin-wallet -wallet=/root/.bitcoin/wallets/wallet/wallet.dat -dumpfile=/root/.bitcoin/wallets/wallet/MyPK.dat dump
-	sudo cd && awk -F 'checksum,' '/checksum/ {print "Your Wallet Private Key:" $2}' .bitcoin/wallets/wallet/MyPK.dat
+	cd && awk -F 'checksum,' '/checksum/ {print "Your Wallet Private Key:" $2}' .bitcoin/wallets/wallet/MyPK.dat
 }
 
 # fractald节点安装功能
