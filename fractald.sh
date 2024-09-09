@@ -116,7 +116,7 @@ function install_fractald_node() {
 
 	[Install]
 	WantedBy=multi-user.target
-	EOF
+EOF
 	
 	sudo systemctl daemon-reload && \
 	sudo systemctl enable fractald && \
