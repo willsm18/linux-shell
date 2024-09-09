@@ -137,7 +137,7 @@ function main_menu() {
 		echo "2. 安装fractald节点"
 		echo "3. 查看fractald日志"
 		echo "4. 创建钱包"
-		echo "5. 创建钱包私钥"
+		echo "5. 查看钱包私钥"
 	    read -p "请输入选项: " OPTION
 	
 	    case $OPTION in
