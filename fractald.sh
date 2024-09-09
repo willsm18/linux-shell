@@ -147,6 +147,8 @@ function main_menu() {
 	5) view_wallet_pk ;;
     *) echo "无效选项。" ;;
     esac
+        echo "按任意键返回主菜单..."
+        read -n 1
 }
 
 # 显示主菜单
