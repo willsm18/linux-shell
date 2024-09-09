@@ -77,12 +77,12 @@ function view_fractald_log() {
 }
 
 function create_wallet() {
-	sudo cd /root/fractald-0.1.7-x86_64-linux-gnu/bin
+	cd /root/fractald-0.1.7-x86_64-linux-gnu/bin
 	sudo ./bitcoin-wallet -wallet=wallet -legacy create
 }
 
 function view_wallet_pk() {
-	sudo cd /root/fractald-0.1.7-x86_64-linux-gnu/bin
+	cd /root/fractald-0.1.7-x86_64-linux-gnu/bin
 	sudo ./bitcoin-wallet -wallet=/root/.bitcoin/wallets/wallet/wallet.dat -dumpfile=/root/.bitcoin/wallets/wallet/MyPK.dat dump
 	sudo cd && awk -F 'checksum,' '/checksum/ {print "Your Wallet Private Key:" $2}' .bitcoin/wallets/wallet/MyPK.dat
 }
