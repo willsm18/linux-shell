@@ -106,53 +106,38 @@ run_validator_node() {
 }
 
 # 主菜单
-show_menu() {
-    echo "请选择一个操作:"
-    echo "1. 安装 Docker"
-    echo "2. 安装依赖项"
-    echo "3. 克隆仓库并安装依赖项"
-    echo "4. 创建钱包并导入私钥"
-    echo "5. 部署 DLP 智能合约"
-    echo "6. 配置 DLP"
-    echo "7. 运行验证者节点"
-    echo "8. 退出"
+function main_menu() {
+    # 主循环
+    while true; do
+        clear
+        echo "请选择一个操作:"
+        echo "1. 安装 Docker"
+        echo "2. 安装依赖项"
+        echo "3. 克隆仓库并安装依赖项"
+        echo "4. 创建钱包并导入私钥"
+        echo "5. 部署 DLP 智能合约"
+        echo "6. 配置 DLP"
+        echo "7. 运行验证者节点"
+        echo "8. 退出"
+        read -p "请输入选项 (1/2/3/4/5/6/7/8): " choice
+        case $choice in
+            1) install_docker;;
+            2) install_dependencies;;
+            3) clone_repo
+               install_python_dependencies;;
+            4) create_wallet
+               export_private_keys
+               add_satori_to_metamask;;
+            5) deploy_dlp_contracts;;
+            6) configure_dlp;;
+            7) run_validator_node;;
+            8) echo "退出脚本。"
+                exit 0;;
+            *) echo "无效选项，请输入 1, 2, 3, 4, 5, 6, 7 或 8.";;
+        esac
+        echo "按任意键返回主菜单..."
+        read -n 1
+    done
 }
-
-# 主循环
-while true; do
-    show_menu
-    read -p "请输入选项 (1/2/3/4/5/6/7/8): " choice
-    case $choice in
-        1)
-            install_docker
-            ;;
-        2)
-            install_dependencies
-            ;;
-        3)
-            clone_repo
-            install_python_dependencies
-            ;;
-        4)
-            create_wallet
-            export_private_keys
-            add_satori_to_metamask
-            ;;
-        5)
-            deploy_dlp_contracts
-            ;;
-        6)
-            configure_dlp
-            ;;
-        7)
-            run_validator_node
-            ;;
-        8)
-            echo "退出脚本。"
-            exit 0
-            ;;
-        *)
-            echo "无效选项，请输入 1, 2, 3, 4, 5, 6, 7 或 8."
-            ;;
-    esac
-done
+# 显示主菜单
+main_menu
