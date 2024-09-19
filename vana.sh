@@ -39,7 +39,7 @@ clone_repo() {
 # 安装 Python 依赖项
 install_python_dependencies() {
     echo "安装 poetry 依赖项..."
-    sudo apt poetry install
+    poetry install
 }
 
 # 安装 vana CLI 工具
