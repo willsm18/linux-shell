@@ -23,7 +23,7 @@ setup_env_file() {
 install_dependencies() {
     echo "安装依赖项..."
     sudo apt update -y
-    sudo apt install -y git python3.11 python3-pip nodejs npm
+    sudo apt install -y git python3.12 python3-pip nodejs npm
     pip install poetry
     echo "依赖项安装完成。"
 }
