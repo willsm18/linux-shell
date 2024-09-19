@@ -33,6 +33,7 @@ clone_repo() {
     echo "克隆 vana-dlp-chatgpt 仓库..."
     git clone https://github.com/vana-com/vana-dlp-chatgpt.git
     cd vana-dlp-chatgpt
+    install_python_dependencies
 }
 
 # 安装 Python 依赖项
@@ -52,6 +53,8 @@ create_wallet() {
     echo "创建钱包..."
     vanacli wallet create --wallet.name default --wallet.hotkey default
     echo "请保存钱包的助记词。"
+    export_private_keys
+    add_satori_to_metamask
 }
 
 # 导出钱包的私钥
@@ -123,11 +126,8 @@ function main_menu() {
         case $choice in
             1) install_docker;;
             2) install_dependencies;;
-            3) clone_repo
-               install_python_dependencies;;
-            4) create_wallet
-               export_private_keys
-               add_satori_to_metamask;;
+            3) clone_repo;;
+            4) create_wallet;;
             5) deploy_dlp_contracts;;
             6) configure_dlp;;
             7) run_validator_node;;
