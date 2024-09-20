@@ -12,6 +12,57 @@ install_docker() {
     echo "Docker 安装完成。"
 }
 
+# 检查并安装 Git
+check_git() {
+  if ! git --version &> /dev/null; then
+    echo "Git 未安装。正在安装 Git..."
+    sudo apt update && sudo apt install -y git
+  else
+    echo "Git 已安装：$(git --version)"
+  fi
+}
+
+# 检查并安装 Python 3.11
+check_python() {
+  if ! python3.11 --version &> /dev/null; then
+    echo "Python 3.11 未安装。正在安装 Python 3.11..."
+    sudo apt update && sudo apt install -y software-properties-common
+    sudo add-apt-repository ppa:deadsnakes/ppa
+    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
+  else
+    echo "Python 3.11 已安装：$(python3.11 --version)"
+  fi
+}
+
+# 检查并安装 Poetry
+check_poetry() {
+  if ! poetry --version &> /dev/null; then
+    echo "Poetry 未安装。正在安装 Poetry..."
+    curl -sSL https://install.python-poetry.org | python3.11 -
+    echo "Poetry 已安装：$(poetry --version)"
+  else
+    echo "Poetry 已安装：$(poetry --version)"
+  fi
+}
+
+# 检查并安装 Node.js 和 npm
+check_node_npm() {
+  if ! node --version &> /dev/null; then
+    echo "Node.js 未安装。正在安装 Node.js..."
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+    sudo apt install -y nodejs
+  else
+    echo "Node.js 已安装：$(node --version)"
+  fi
+
+  if ! npm --version &> /dev/null; then
+    echo "npm 未安装。正在安装 npm..."
+    sudo apt install -y npm
+  else
+    echo "npm 已安装：$(npm --version)"
+  fi
+}
+
 # 设置环境变量文件
 setup_env_file() {
     echo "设置 .env 文件..."
@@ -22,9 +73,11 @@ setup_env_file() {
 # 安装必要的依赖项
 install_dependencies() {
     echo "安装依赖项..."
-    sudo apt update -y
-    sudo apt install -y git python3.11 python3-pip nodejs npm
-    pip install poetry
+    # 执行检查并安装
+    check_git
+    check_python
+    check_poetry
+    check_node_npm
     echo "依赖项安装完成。"
 }
 
@@ -36,7 +89,7 @@ clone_repo() {
     install_python_dependencies
 }
 
-# 安装 Python 依赖项
+# 安装 项目依赖项
 install_python_dependencies() {
     echo "安装 poetry 依赖项..."
     poetry install
