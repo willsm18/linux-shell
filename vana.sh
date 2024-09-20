@@ -92,8 +92,8 @@ clone_repo() {
 
 # 安装 项目依赖项
 install_python_dependencies() {
-    echo "安装 poetry 依赖项..."
-    poetry install
+    echo "使用 pip 安装 vana..."
+    pip install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
 }
 
 # 安装 vana CLI 工具
