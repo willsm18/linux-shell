@@ -108,7 +108,8 @@ install_vana_cli() {
 # 创建钱包
 create_wallet() {
     echo "创建钱包..."
-    vanacli wallet create --wallet.name default --wallet.hotkey default
+    cd vana-dlp-chatgpt
+    ./vanacli wallet create --wallet.name default --wallet.hotkey default
     echo "请保存钱包的助记词。"
     export_private_keys
     add_satori_to_metamask
@@ -117,8 +118,8 @@ create_wallet() {
 # 导出钱包的私钥
 export_private_keys() {
     echo "导出冷钱包和热钱包私钥..."
-    vanacli wallet export_private_key --wallet.name default --key.type coldkey
-    vanacli wallet export_private_key --wallet.name default --key.type hotkey
+    ./vanacli wallet export_private_key --wallet.name default --key.type coldkey
+    ./vanacli wallet export_private_key --wallet.name default --key.type hotkey
     echo "请手动将这些私钥导入 Metamask 中。"
 }
 
