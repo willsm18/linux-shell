@@ -163,6 +163,7 @@ configure_dlp() {
 # 运行验证者节点
 run_validator_node() {
     echo "启动验证者节点..."
+    cd vana-dlp-chatgpt
     poetry run python -m chatgpt.nodes.validator
 }
 
