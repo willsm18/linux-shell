@@ -17,7 +17,10 @@ function install_git() {
 function install_python() {
     if ! python3 --version &> /dev/null; then
         echo "Python 未安装。正在安装 Python..."
-        sudo apt update && sudo apt install -y python3 python3-pip
+        # sudo apt update && sudo apt install -y python3 python3-pip
+        sudo apt update && sudo apt install -y software-properties-common
+        sudo add-apt-repository ppa:deadsnakes/ppa
+        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
     fi
 }
 
