@@ -20,7 +20,7 @@ function install_python() {
         # sudo apt update && sudo apt install -y python3 python3-pip
         sudo apt update && sudo apt install -y software-properties-common
         sudo add-apt-repository ppa:deadsnakes/ppa
-        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
+        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-poetry
     fi
 }
 
@@ -65,7 +65,8 @@ function clone_and_enter_repo() {
 function install_dependencies() {
     cp .env.example .env
     echo "使用 pip 安装 vana..."
-    pip3 install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
+    # pip3 install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
+    poetry install
 }
 
 function check_poetry() {
