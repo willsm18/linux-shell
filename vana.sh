@@ -96,13 +96,7 @@ clone_repo() {
 # 安装 项目依赖项
 install_python_dependencies() {
     echo "使用 pip 安装 vana..."
-    pip install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
-}
-
-# 安装 vana CLI 工具
-install_vana_cli() {
-    echo "安装 vana CLI..."
-    pip install vana
+    poetry install || { echo "依赖安装失败，脚本终止"; exit 1; }
 }
 
 # 运行密钥生成函数
