@@ -105,12 +105,20 @@ install_vana_cli() {
     pip install vana
 }
 
+# 运行密钥生成函数
+function run_keygen() {
+    echo "运行密钥生成..."
+    ./keygen.sh
+    echo "请输入您的姓名、电子邮件和密钥时长。"
+}
+
 # 创建钱包
 create_wallet() {
     echo "创建钱包..."
     cd vana-dlp-chatgpt
     ./vanacli wallet create --wallet.name default --wallet.hotkey default
     echo "请保存钱包的助记词。"
+    run_keygen
     export_private_keys
     add_satori_to_metamask
 }
