@@ -146,6 +146,8 @@ deploy_dlp_contracts() {
     cd ..
     git clone https://github.com/vana-com/vana-dlp-smart-contracts.git
     cd vana-dlp-smart-contracts
+    sudo apt install -y cmdtest
+    npm install --global yarn
     echo "安装智能合约依赖项..."
     yarn install
 
