@@ -20,7 +20,7 @@ function install_python() {
         # sudo apt update && sudo apt install -y python3 python3-pip
         sudo apt update && sudo apt install -y software-properties-common
         sudo add-apt-repository ppa:deadsnakes/ppa
-        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
+        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip
     fi
 }
 
