@@ -28,11 +28,11 @@ check_python() {
     echo "Python 3.11 未安装。正在安装 Python 3.11..."
     sudo apt update && sudo apt install -y software-properties-common
     sudo add-apt-repository ppa:deadsnakes/ppa
-    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip python3-poetry
+    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip
   else
     sudo apt update && sudo apt install -y software-properties-common
     sudo add-apt-repository ppa:deadsnakes/ppa
-    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip python3-poetry
+    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip
     echo "Python 3.11 已安装：$(python3.11 --version)"
   fi
 }
@@ -96,7 +96,7 @@ clone_repo() {
 # 安装 项目依赖项
 install_python_dependencies() {
     echo "使用 pip 安装 vana..."
-    poetry install || { echo "依赖安装失败，脚本终止"; exit 1; }
+    pip install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
 }
 
 # 运行密钥生成函数
