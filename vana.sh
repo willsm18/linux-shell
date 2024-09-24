@@ -24,7 +24,8 @@ check_git() {
 
 # 检查并安装 Python 3.11
 check_python() {
-  if ! python3.11 --version &> /dev/null; then
+  # if ! python3.11 --version &> /dev/null; then
+  if ! python3 --version &> /dev/null; then
     echo "Python 3.11 未安装。正在安装 Python 3.11..."
     # sudo apt update && sudo apt install -y software-properties-common
     # sudo add-apt-repository ppa:deadsnakes/ppa
