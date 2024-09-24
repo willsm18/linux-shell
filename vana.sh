@@ -1,201 +1,180 @@
 #!/bin/bash
 
-# 安装 Docker
-install_docker() {
-    echo "安装 Docker..."
-    sudo apt update
-    sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt update
-    sudo apt install -y docker-ce docker-ce-cli containerd.io
-    echo "Docker 安装完成。"
+# 脚本保存路径
+SCRIPT_PATH="$HOME/vana.sh"
+
+# 安装 Git 函数
+function install_git() {
+    if ! git --version &> /dev/null; then
+        echo "Git 未安装。正在安装 Git..."
+        sudo apt update && sudo apt install -y git
+    else
+        echo "Git 已安装：$(git --version)"
+    fi
 }
 
-# 检查并安装 Git
-check_git() {
-  if ! git --version &> /dev/null; then
-    echo "Git 未安装。正在安装 Git..."
-    sudo apt update && sudo apt install -y git
-  else
-    echo "Git 已安装：$(git --version)"
-  fi
+# 安装 Python 函数
+function install_python() {
+    if ! python3 --version &> /dev/null; then
+        echo "Python 未安装。正在安装 Python..."
+        sudo apt update && sudo apt install -y python3 python3-pip
+    fi
 }
 
-# 检查并安装 Python 3.11
-check_python() {
-  if ! python3.11 --version &> /dev/null; then
-    echo "Python 3.11 未安装。正在安装 Python 3.11..."
-    sudo apt update && sudo apt install -y software-properties-common
-    sudo add-apt-repository ppa:deadsnakes/ppa
-    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
-  else
-    sudo apt update && sudo apt install -y software-properties-common
-    sudo add-apt-repository ppa:deadsnakes/ppa
-    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
-    echo "Python 3.11 已安装：$(python3.11 --version)"
-  fi
+# 安装 Node.js 和 npm 函数
+function install_node() {
+    if ! node --version &> /dev/null; then
+        echo "Node.js 未安装。正在安装 Node.js..."
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+        sudo apt install -y nodejs
+    fi
+
+    if ! npm --version &> /dev/null; then
+        echo "npm 未安装。正在安装 npm..."
+        sudo apt install -y npm
+    fi
 }
 
-# 检查并安装 Poetry
-check_poetry() {
-  if ! poetry --version &> /dev/null; then
-    echo "Poetry 未安装。正在安装 Poetry..."
-    curl -sSL https://install.python-poetry.org | python3.11 -
-    echo "Poetry 已安装：$(poetry --version)"
-  else
-    echo "Poetry 已安装：$(poetry --version)"
-  fi
+# 安装 nvm 函数
+function install_nvm() {
+    if ! command -v nvm &> /dev/null; then
+        echo "nvm 未安装。正在安装 nvm..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    fi
 }
 
-# 检查并安装 Node.js 和 npm
-check_node_npm() {
-  if ! node --version &> /dev/null; then
-    echo "Node.js 未安装。正在安装 Node.js..."
-    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-    sudo apt install -y nodejs
-  else
-    echo "Node.js 已安装：$(node --version)"
-  fi
-
-  if ! npm --version &> /dev/null; then
-    echo "npm 未安装。正在安装 npm..."
-    sudo apt install -y npm
-  else
-    echo "npm 已安装：$(npm --version)"
-  fi
+# 使用 Node.js 18 函数
+function use_node_18() {
+    nvm install 18
+    nvm use 18
 }
 
-# 设置环境变量文件
-setup_env_file() {
-    echo "设置 .env 文件..."
-    cp .env.example .env
-    echo "请手动填充 DLP 特定的信息到 .env 文件中。"
-}
-
-# 安装必要的依赖项
-install_dependencies() {
-    echo "安装依赖项..."
-    # 执行检查并安装
-    check_git
-    check_python
-    check_poetry
-    check_node_npm
-    clone_repo
-    echo "依赖项安装完成。"
-}
-
-# 克隆仓库
-clone_repo() {
-    echo "克隆 vana-dlp-chatgpt 仓库..."
+# 克隆 Git 仓库并进入目录函数
+function clone_and_enter_repo() {
+    echo "克隆仓库 vana-dlp-chatgpt..."
     git clone https://github.com/vana-com/vana-dlp-chatgpt.git
-    cd vana-dlp-chatgpt
+    cd vana-dlp-chatgpt || { echo "无法进入目录，脚本终止"; exit 1; }
+}
+
+# 安装项目依赖函数
+function install_dependencies() {
     cp .env.example .env
-    install_python_dependencies
-}
-
-# 安装 项目依赖项
-install_python_dependencies() {
     echo "使用 pip 安装 vana..."
-    pip install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
+    pip3 install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
 }
 
-# 安装 vana CLI 工具
-install_vana_cli() {
-    echo "安装 vana CLI..."
-    pip install vana
+# 运行密钥生成函数
+function run_keygen() {
+    echo "运行密钥生成..."
+    ./keygen.sh
+    echo "请输入您的姓名、电子邮件和密钥时长。"
 }
 
-# 创建钱包
-create_wallet() {
-    echo "创建钱包..."
-    cd vana-dlp-chatgpt
-    ./vanacli wallet create --wallet.name default --wallet.hotkey default
-    echo "请保存钱包的助记词。"
-    export_private_keys
-    add_satori_to_metamask
-}
-
-# 导出钱包的私钥
-export_private_keys() {
-    echo "导出冷钱包和热钱包私钥..."
-    ./vanacli wallet export_private_key --wallet.name default --key.type coldkey
-    ./vanacli wallet export_private_key --wallet.name default --key.type hotkey
-    echo "请手动将这些私钥导入 Metamask 中。"
-}
-
-# 添加 Satori 测试网到 Metamask
-add_satori_to_metamask() {
-    echo "请手动添加 Satori 测试网到 Metamask，使用以下信息："
-    echo "网络名称: Satori Testnet"
-    echo "RPC URL: https://rpc.satori.vana.org"
-    echo "链ID: 14801"
-    echo "货币符号: VANA"
-}
-
-# 部署 DLP 智能合约
-deploy_dlp_contracts() {
-    echo "克隆 vana-dlp-smart-contracts 仓库..."
-    cd ..
+# 部署 DLP 智能合约函数
+function deploy_dlp_contract() {
+    cd .. || { echo "无法返回上级目录，脚本终止"; exit 1; }
+    echo "克隆 DLP 智能合约仓库..."
     git clone https://github.com/vana-com/vana-dlp-smart-contracts.git
-    cd vana-dlp-smart-contracts
-    echo "安装智能合约依赖项..."
-    yarn install
+    cd vana-dlp-smart-contracts || { echo "无法进入目录，脚本终止"; exit 1; }
 
-    echo "配置 .env 文件并导入冷钱包私钥..."
-    read -p "请输入您的冷钱包私钥: " coldkey_private_key
-    echo "DEPLOYER_PRIVATE_KEY=$coldkey_private_key" >> .env
-    echo "OWNER_ADDRESS=<你的冷钱包地址>" >> .env
-    echo "SATORI_RPC_URL=https://rpc.satori.vana.org" >> .env
-    echo "DLP_NAME=<你的DLP名称>" >> .env
-    echo "DLP_TOKEN_NAME=<你的DLP代币名称>" >> .env
-    echo "DLP_TOKEN_SYMBOL=<你的DLP代币符号>" >> .env
+    echo "安装依赖项..."
+    sudo apt install -y cmdtest
+    npm install --global yarn
+}
 
-    echo "部署智能合约..."
+# 初始化 npm 和安装 Hardhat 函数
+function setup_hardhat() {
+    npm init -y
+    npm install --save-dev hardhat
+    nvm install 18
+    nvm use 18
+    npm install --save-dev hardhat
+    npx hardhat
+    echo "请输入您的冷键私钥以配置 accounts: [\"0x你的冷键私钥\"]。"
+}
+
+# 部署合约并提示用户保存地址函数
+function deploy_and_save_addresses() {
+    echo "部署合约..."
     npx hardhat deploy --network satori --tags DLPDeploy
+
+    echo "请保存 DataLiquidityPool 和 DataLiquidityPoolToken 的部署地址。"
+    echo "按任意键返回主菜单..."
+    read -n 1 -s
 }
 
-# 配置 DLP
-configure_dlp() {
-    echo "配置 DLP 合约..."
-    echo "请访问 https://satori.vanascan.io/address/ 并执行配置操作。"
-}
+# 启动验证者节点函数
+function start_validator_node() {
+    cd ~/vana-dlp-chatgpt || { echo "无法进入目录，脚本终止"; exit 1; }
 
-# 运行验证者节点
-run_validator_node() {
+    read -rp "请输入 DataLiquidityPool 地址 (DLP_SATORI_CONTRACT=0x...)：" dlp_satori_contract
+    read -rp "请输入 DataLiquidityPoolToken 地址 (DLP_TOKEN_SATORI_CONTRACT=0x...)：" dlp_token_satori_contract
+    read -rp "请输入 钱包公钥 (PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64)：" public_key
+
+    # 导入到 .env 文件中
+    echo "DLP_SATORI_CONTRACT=${dlp_satori_contract}" >> .env
+    echo "DLP_TOKEN_SATORI_CONTRACT=${dlp_token_satori_contract}" >> .env
+    echo "PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=${public_key}" >> .env
+
+    echo "安装 Poetry..."
+    sudo apt install -y python3-poetry
+
+    echo "注册验证者节点..."
+    ./vanacli dlp register_validator --stake_amount 10
+
     echo "启动验证者节点..."
-    cd vana-dlp-chatgpt
     poetry run python -m chatgpt.nodes.validator
+
+    echo "验证者节点启动配置已完成。"
+    echo "按任意键返回主菜单..."
+    read -n 1 -s
 }
 
-# 主菜单
+# 部署环境函数
+function deploy_environment() {
+    install_git
+    install_python
+    install_node
+    install_nvm
+    use_node_18
+    clone_and_enter_repo
+    install_dependencies
+    run_keygen
+    deploy_dlp_contract
+    setup_hardhat
+    deploy_and_save_addresses
+}
+
+# 主菜单函数
 function main_menu() {
-    # 主循环
     while true; do
         clear
-        echo "请选择一个操作:"
-        echo "1. 安装 Docker"
-        echo "2. 安装依赖项"
-        echo "3. 创建钱包并导入私钥"
-        echo "4. 部署 DLP 智能合约"
-        echo "5. 配置 DLP"
-        echo "6. 运行验证者节点"
-        echo "7. 退出"
-        read -p "请输入选项 (1/2/3/4/5/6/7/8): " choice
+        echo "请选择要执行的操作:"
+        echo "1) 部署环境"
+        echo "2) 启动验证者节点"
+        echo "0) 退出"
+        echo "================================================================"
+        read -rp "输入您的选择: " choice
+
         case $choice in
-            1) install_docker;;
-            2) install_dependencies;;
-            3) create_wallet;;
-            4) deploy_dlp_contracts;;
-            5) configure_dlp;;
-            6) run_validator_node;;
-            7) echo "退出脚本。"
-                exit 0;;
-            *) echo "无效选项，请输入 1, 2, 3, 4, 5, 6, 7 或 8.";;
+            1)
+                deploy_environment
+                ;;
+            2)
+                start_validator_node
+                ;;
+            0)
+                echo "退出脚本"
+                exit 0
+                ;;
+            *)
+                echo "无效的选择，请重新输入"
+                ;;
         esac
-        echo "按任意键返回主菜单..."
-        read -n 1
     done
 }
-# 显示主菜单
+
+# 启动主菜单
 main_menu
