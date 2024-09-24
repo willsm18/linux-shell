@@ -173,8 +173,30 @@ configure_dlp() {
 # 运行验证者节点
 run_validator_node() {
     echo "启动验证者节点..."
-    cd vana-dlp-chatgpt
+    # poetry run python -m chatgpt.nodes.validator
+    cd ~/vana-dlp-chatgpt || { echo "无法进入目录，脚本终止"; exit 1; }
+
+    read -rp "请输入 DataLiquidityPool 地址 (DLP_SATORI_CONTRACT=0x...)：" dlp_satori_contract
+    read -rp "请输入 DataLiquidityPoolToken 地址 (DLP_TOKEN_SATORI_CONTRACT=0x...)：" dlp_token_satori_contract
+    read -rp "请输入 钱包公钥 (PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64)：" public_key
+
+    # 导入到 .env 文件中
+    echo "DLP_SATORI_CONTRACT=${dlp_satori_contract}" >> .env
+    echo "DLP_TOKEN_SATORI_CONTRACT=${dlp_token_satori_contract}" >> .env
+    echo "PRIVATE_FILE_ENCRYPTION_PUBLIC_KEY_BASE64=${public_key}" >> .env
+
+    echo "安装 Poetry..."
+    sudo apt install -y python3-poetry
+
+    echo "注册验证者节点..."
+    ./vanacli dlp register_validator --stake_amount 10
+
+    echo "启动验证者节点..."
     poetry run python -m chatgpt.nodes.validator
+
+    echo "验证者节点启动配置已完成。"
+    echo "按任意键返回主菜单..."
+    read -n 1 -s
 }
 
 # 主菜单
@@ -187,7 +209,6 @@ function main_menu() {
         echo "2. 安装依赖项"
         echo "3. 创建钱包并导入私钥"
         echo "4. 部署 DLP 智能合约"
-        echo "5. 配置 DLP"
         echo "6. 运行验证者节点"
         echo "7. 退出"
         read -p "请输入选项 (1/2/3/4/5/6/7/8): " choice
@@ -196,7 +217,6 @@ function main_menu() {
             2) install_dependencies;;
             3) create_wallet;;
             4) deploy_dlp_contracts;;
-            5) configure_dlp;;
             6) run_validator_node;;
             7) echo "退出脚本。"
                 exit 0;;
