@@ -90,6 +90,7 @@ clone_repo() {
     echo "克隆 vana-dlp-chatgpt 仓库..."
     git clone https://github.com/vana-com/vana-dlp-chatgpt.git
     cd vana-dlp-chatgpt
+    cp .env.example .env
     install_python_dependencies
 }
 
