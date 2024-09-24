@@ -20,7 +20,7 @@ function install_python() {
         # sudo apt update && sudo apt install -y python3 python3-pip
         sudo apt update && sudo apt install -y software-properties-common
         sudo add-apt-repository ppa:deadsnakes/ppa
-        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev python3-pip
+        sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
     fi
 }
 
@@ -66,6 +66,16 @@ function install_dependencies() {
     cp .env.example .env
     echo "使用 pip 安装 vana..."
     pip3 install vana || { echo "依赖安装失败，脚本终止"; exit 1; }
+}
+
+function check_poetry() {
+  if ! poetry --version &> /dev/null; then
+    echo "Poetry 未安装。正在安装 Poetry..."
+    curl -sSL https://install.python-poetry.org | python3.11 -
+    echo "Poetry 已安装：$(poetry --version)"
+  else
+    echo "Poetry 已安装：$(poetry --version)"
+  fi
 }
 
 # 运行密钥生成函数
@@ -139,6 +149,7 @@ function start_validator_node() {
 function deploy_environment() {
     install_git
     install_python
+    check_poetry
     install_node
     install_nvm
     use_node_18
