@@ -8,6 +8,7 @@ NETWORK='testnet-16200-pruned-mpt.g'
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get install -y build-essential
+
 # Install golang
 # wget https://dl.google.com/go/go1.15.10.linux-amd64.tar.gz
 # sudo tar -xvf go1.15.10.linux-amd64.tar.gz -C /usr/local/
@@ -19,6 +20,7 @@ export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 #export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.bash_aliases
 #source ~/.bash_aliases
+
 # Checkout and build go-opera
 git clone https://github.com/Fantom-foundation/go-opera.git
 cd go-opera/
