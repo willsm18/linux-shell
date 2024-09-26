@@ -29,8 +29,8 @@ make
 # Download the genesis file
 cd build/
 #wget https://opera.fantom.network/$NETWORK
-wget https://files.fantom.network/$NETWORK
+#wget https://files.fantom.network/$NETWORK
 # Start a read-only node to join the selected network
 # nohup ./opera --genesis $NETWORK &
-nohup ./opera --genesis $NETWORK --nousb \
-      --db.preset ldb-1 &
+#nohup ./opera --genesis $NETWORK --nousb \
+      #--db.preset ldb-1 &
