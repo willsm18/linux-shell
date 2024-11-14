@@ -88,7 +88,12 @@ function install_docker() {
 
 # 节点安装功能
 function install_node() {
-	
+	# 替换下载得镜像
+	cp /etc/apt/sources.list /etc/apt/sources.list-bak
+	wget archive.kali.org/archive-key.asc
+	apt-key add archive-key.asc
+	echo -e "#中科大\ndeb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib\ndeb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib" | tee /etc/apt/sources.list
+
 	# 更新系统包列表
 	sudo apt update
 	# 安装基本组件
